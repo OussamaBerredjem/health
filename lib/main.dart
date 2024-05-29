@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health/screens/login_screen.dart';
+import 'package:health/screens/onboarding_screen.dart';
 import 'package:health/services/provider_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,9 +18,9 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
         create: (context) => ProviderService(),
         child:MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Carnet de Sante',
       theme:ThemeData.light(useMaterial3: false),
-      home: LoginScreen(),
+      home: OnboardingScreen(),
 
     ));
   }
