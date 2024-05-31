@@ -17,15 +17,16 @@ class CarnetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
+      color: Colors.white70,
       child: ListTile(
         onTap: (){
           Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>MyHomePage(id: carnet.id,)));
 
         },
-        title: Text(carnet.toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+        title: Text(carnet.toString(),style: TextStyle(fontWeight: FontWeight.bold,),),
         trailing: IconButton(
           onPressed:onRemove,
-          icon: Icon(Icons.delete),
+          icon: Icon(Icons.delete,color: Colors.redAccent),
         ),
       ),
     );

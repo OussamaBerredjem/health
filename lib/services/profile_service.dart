@@ -1,5 +1,5 @@
 import 'package:health/models/data_stored.dart';
-import 'package:health/shared/manage_cache.dart';
+import 'package:health/services/manage_cache.dart';
 
 import '../models/user.dart';
 

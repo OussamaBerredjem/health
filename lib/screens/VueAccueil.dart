@@ -1,6 +1,8 @@
 import '/screens/HomePage.dart';
 import 'package:flutter/material.dart';
 
+import 'measure_screen.dart';
+
 class Medicament {
   String nom;
   String formePharmaceutique;
@@ -20,6 +22,9 @@ class Medicament {
 }
 
 class VueAccueil extends StatelessWidget {
+  int? id;
+  VueAccueil({this.id});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -86,7 +91,7 @@ class VueAccueil extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MesuresPage(),
+                      builder: (context) => MesuresPage(id: id,),
                     ),
                   );
                 },
@@ -310,19 +315,8 @@ class VaccinationsPage extends StatelessWidget {
   }
 }
 
-class MesuresPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Mesures de santé'),
-      ),
-      body: Center(
-        child: Text('Page de mesures de santé'),
-      ),
-    );
-  }
-}
+//Measure page
+
 
 class OrdonnancesPage extends StatelessWidget {
   @override

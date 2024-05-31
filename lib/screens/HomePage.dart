@@ -8,9 +8,7 @@ import 'VueAccueil.dart';
 import 'VueProfil.dart';
 import 'Vuecartes.dart';
 
-void main() {
-  runApp(MyApp());
-}
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -116,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildBody() {
     switch (_selectedIndex) {
       case 0:
-        return VueAccueil(); // Modification ici
+        return VueAccueil(id:widget.id); // Modification ici
       case 1:
         return VueCartes(); // Modification ici
       case 2:
