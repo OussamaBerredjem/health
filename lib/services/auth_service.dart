@@ -12,9 +12,9 @@ class AuthService{
     /** get the id of the user and role => note: use your api to get it **/
     String role;
 
-    Response response = await Dio().post("",queryParameters: {});
+    //Response response = await Dio().post("",queryParameters: {});
 
-    response.data;
+    //response.data;
 
     if(email.contains("user")){
       role =  Role.user; /** you can switch between smep and user => note: change the rest of code also **/

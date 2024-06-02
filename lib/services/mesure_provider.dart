@@ -10,6 +10,7 @@ class MesureProvider extends ChangeNotifier{
 
   Future<List<MesureModel>> getMesures(String mesure,DataStored? user) async{
 
+    await Future.delayed(Duration(seconds: 1));
     /** dont touch this if else **/
     /** the id of user or measure detected after this if/else **/
     /** do your logic with the id after else **/
@@ -167,6 +168,8 @@ class MesureProvider extends ChangeNotifier{
         break;
 
     }
+    notifyListeners();
+
 
 
   }

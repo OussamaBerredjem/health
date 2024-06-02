@@ -24,6 +24,7 @@ class _AjouterParentPageState extends State<AjouterParentPage> {
   final _prenomController = TextEditingController();
   final _dateNaissanceController = TextEditingController();
   final _communeNaissanceController = TextEditingController();
+  final _password= TextEditingController();
   String? _selectedSexe;
   String? _selectedWilaya;
 
@@ -40,7 +41,7 @@ class _AjouterParentPageState extends State<AjouterParentPage> {
 
   void _submitForm() async{
     if (_formKey.currentState?.validate() ?? false) {
-     await Provider.of<ProviderService>(context,listen: false).addCarnet(_nomController.text, _prenomController.text, _dateNaissanceController.text, _communeNaissanceController.text, _selectedWilaya.toString(), _selectedSexe.toString(),widget.user);
+     await Provider.of<ProviderService>(context,listen: false).addCarnet(_nomController.text, _prenomController.text, _dateNaissanceController.text, _communeNaissanceController.text, _selectedWilaya.toString(), _selectedSexe.toString(),_password.text,widget.user);
       Navigator.pop(context);
     }
   }
@@ -153,6 +154,17 @@ class _AjouterParentPageState extends State<AjouterParentPage> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez sélectionner le sexe';
+                  }
+                  return null;
+                },
+              ),
+              _buildTextField(
+                controller: _password,
+                label: 'password',
+                icon: Icons.password_outlined,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Veuillez entrer password';
                   }
                   return null;
                 },

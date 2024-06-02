@@ -32,7 +32,7 @@ class ProviderService with ChangeNotifier {
       return carnet;
     }
 
-    Future<void> addCarnet(String nom,String prenom,String dateNaissance,String lieuNaissance,String wilaya,String sexe,DataStored? user) async{
+    Future<void> addCarnet(String nom,String prenom,String dateNaissance,String lieuNaissance,String wilaya,String sexe,String password,DataStored? user) async{
 
 
       if(user !=null){
