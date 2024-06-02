@@ -8,18 +8,19 @@ import '../models/data_stored.dart';
 class MesureProvider extends ChangeNotifier{
 
 
-  Future<List<MesureModel>> getMesures(String mesure,int? id) async{
+  Future<List<MesureModel>> getMesures(String mesure,DataStored? user) async{
 
     /** dont touch this if else **/
     /** the id of user or measure detected after this if/else **/
     /** do your logic with the id after else **/
+    String id ="";
 
-    if(id != null){
+    if(user != null){
 
     }else{
       ManageCache manageCache = ManageCache();
       DataStored? dataStored = await manageCache.dataStored();
-      id = dataStored?.id??0;
+      String id = dataStored?.id??"";
       /** when role is user **/
     }
 
@@ -47,7 +48,7 @@ class MesureProvider extends ChangeNotifier{
     return [];
   }
 
-  Future<List<MesureModel>> FrequenceGet(int id) async{
+  Future<List<MesureModel>> FrequenceGet(String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
     List<MesureModel> list = [
@@ -58,7 +59,7 @@ class MesureProvider extends ChangeNotifier{
 
     return list;
   }
-  Future<List<MesureModel>> GlycemieGet(int id) async{
+  Future<List<MesureModel>> GlycemieGet(String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
     List<MesureModel> list = [
@@ -71,7 +72,7 @@ class MesureProvider extends ChangeNotifier{
     return list;
   }
 
-  Future<List<MesureModel>> PoidsGet(int id) async{
+  Future<List<MesureModel>> PoidsGet(String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
     List<MesureModel> list = [
@@ -84,7 +85,7 @@ class MesureProvider extends ChangeNotifier{
     return list;
   }
 
-  Future<List<MesureModel>> TailleGet(int id) async{
+  Future<List<MesureModel>> TailleGet(String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
     List<MesureModel> list = [
@@ -97,7 +98,7 @@ class MesureProvider extends ChangeNotifier{
     return list;
   }
 
-  Future<List<MesureModel>> TensionGet(int id) async{
+  Future<List<MesureModel>> TensionGet(String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
     List<MesureModel> list = [
@@ -109,7 +110,7 @@ class MesureProvider extends ChangeNotifier{
 
     return list;
   }
-  Future<List<MesureModel>> TaillesGet(int id) async{
+  Future<List<MesureModel>> TaillesGet(String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
     List<MesureModel> list = [
@@ -126,17 +127,20 @@ class MesureProvider extends ChangeNotifier{
   /** Add  **/
 
 
-  Future<void> AddMesures(MesureModel mesure,int? id) async{
+  Future<void> AddMesures(MesureModel mesure,DataStored? user) async{
 
     /** dont touch this if else **/
     /** the id of user or measure detected after this if/else **/
     /** do your logic with the id after else **/
 
-    if(id != null){
+    String id ="";
+
+    if(user != null){
+       id = user.id;
     }else{
       ManageCache manageCache = ManageCache();
       DataStored? dataStored = await manageCache.dataStored();
-      id = dataStored?.id??0;
+       id = dataStored?.id??"";
       /** when role is user **/
 
 
@@ -168,7 +172,7 @@ class MesureProvider extends ChangeNotifier{
   }
 
 
-  Future<void> FrequenceAdd(MesureModel model,int id) async{
+  Future<void> FrequenceAdd(MesureModel model,String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
    /** Add it To database **/
@@ -177,7 +181,7 @@ class MesureProvider extends ChangeNotifier{
 
   }
 
-  Future<void> GlycemieAdd(MesureModel model,int id) async{
+  Future<void> GlycemieAdd(MesureModel model,String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
 
@@ -185,7 +189,7 @@ class MesureProvider extends ChangeNotifier{
 
   }
 
-  Future<void> PoidsAdd(MesureModel model,int id) async{
+  Future<void> PoidsAdd(MesureModel model,String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
 
@@ -194,7 +198,7 @@ class MesureProvider extends ChangeNotifier{
 
   }
 
-  Future<void> TailleAdd(MesureModel model,int id) async{
+  Future<void> TailleAdd(MesureModel model,String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
 
@@ -203,7 +207,7 @@ class MesureProvider extends ChangeNotifier{
 
   }
 
-  Future<void> TensionAdd(MesureModel model,int id) async{
+  Future<void> TensionAdd(MesureModel model,String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
 
@@ -211,7 +215,7 @@ class MesureProvider extends ChangeNotifier{
     notifyListeners();
 
   }
-  Future<void> TaillesAdd(MesureModel model,int id) async{
+  Future<void> TaillesAdd(MesureModel model,String id) async{
     await Future.delayed(Duration(milliseconds: 500));
 
     notifyListeners();

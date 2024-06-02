@@ -1,3 +1,12 @@
+import 'dart:core';
+import 'package:health/models/doctor_model.dart';
+import 'package:health/services/manage_cache.dart';
+import 'package:provider/provider.dart';
+
+import '../models/data_stored.dart';
+import '../models/role.dart';
+import '../services/medecament_service.dart';
+import '../shared/gestion_medecament_widget.dart';
 import '/screens/HomePage.dart';
 import 'package:flutter/material.dart';
 
@@ -6,10 +15,11 @@ import 'measure_screen.dart';
 class Medicament {
   String nom;
   String formePharmaceutique;
-  double dosage;
+  String dosage;
   String unite;
-  DateTime dateDebut;
-  int duree; // Durée en jours
+  String dateDebut;
+  String duree; // Durée en jours
+  int? id;
 
   Medicament({
     required this.nom,
@@ -18,12 +28,13 @@ class Medicament {
     required this.unite,
     required this.dateDebut,
     required this.duree,
+    this.id
   });
 }
 
 class VueAccueil extends StatelessWidget {
-  int? id;
-  VueAccueil({this.id});
+  DataStored? user;
+  VueAccueil({this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +69,7 @@ class VueAccueil extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => GestionMedicamentsPage(),
+                      builder: (context) => GestionMedicamentsPage(user: user,),
                     ),
                   );
                 },
@@ -91,7 +102,7 @@ class VueAccueil extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MesuresPage(id: id,),
+                      builder: (context) => MesuresPage(user: user,),
                     ),
                   );
                 },
@@ -149,25 +160,53 @@ class VueAccueil extends StatelessWidget {
 }
 
 class GestionMedicamentsPage extends StatefulWidget {
+  DataStored? user;
+  GestionMedicamentsPage({this.user});
   @override
   _GestionMedicamentsPageState createState() => _GestionMedicamentsPageState();
 }
 
 class _GestionMedicamentsPageState extends State<GestionMedicamentsPage> {
+
+
   List<Medicament> medicaments = [];
+
+  TextEditingController _nomController = TextEditingController();
+  TextEditingController _formePharmaceutiqueController = TextEditingController();
+  TextEditingController _dosageController = TextEditingController();
+  TextEditingController _uniteController = TextEditingController();
+  TextEditingController _dateDebutController = TextEditingController();
+  TextEditingController _dureeController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  late DataStored dataStored;
+
+
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      setState(() {
+        _dateDebutController.text = "${picked.toLocal()}".split(' ')[0];
+      });
+    }
+  }
+
 
   void _addMedicament() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        TextEditingController _nomController = TextEditingController();
-        TextEditingController _formePharmaceutiqueController =
-            TextEditingController();
-        TextEditingController _dosageController = TextEditingController();
-        TextEditingController _uniteController = TextEditingController();
-        TextEditingController _dateDebutController = TextEditingController();
-        TextEditingController _dureeController = TextEditingController();
-
         return AlertDialog(
           title: Text('Ajouter un médicament'),
           content: SingleChildScrollView(
@@ -193,13 +232,19 @@ class _GestionMedicamentsPageState extends State<GestionMedicamentsPage> {
                 ),
                 TextField(
                   controller: _dateDebutController,
+                  readOnly: true,
+                  onTap:() => _selectDate(context),
                   decoration:
-                      InputDecoration(labelText: 'Date de début (jj/mm/aaaa)'),
+                      InputDecoration(
+                          labelText: 'Date de début (jj/mm/aaaa)'),
                 ),
                 TextField(
                   controller: _dureeController,
-                  decoration: InputDecoration(labelText: 'Durée (en jours)'),
-                  keyboardType: TextInputType.number,
+                  keyboardType:TextInputType.number,
+
+                  decoration: InputDecoration(
+
+                      labelText: 'Durée (en jours)'),
                 ),
               ],
             ),
@@ -213,28 +258,29 @@ class _GestionMedicamentsPageState extends State<GestionMedicamentsPage> {
             ),
             TextButton(
               child: Text('AJOUTER'),
-              onPressed: () {
-                setState(() {
-                  final nom = _nomController.text;
-                  final formePharmaceutique =
-                      _formePharmaceutiqueController.text;
-                  final dosage = double.parse(_dosageController.text);
-                  final unite = _uniteController.text;
-                  final dateDebut = DateTime.parse(_dateDebutController.text);
-                  final duree = int.parse(_dureeController.text);
+              onPressed: () async{
 
-                  final medicament = Medicament(
-                    nom: nom,
-                    formePharmaceutique: formePharmaceutique,
-                    dosage: dosage,
-                    unite: unite,
-                    dateDebut: dateDebut,
-                    duree: duree,
-                  );
 
-                  medicaments.add(medicament);
-                });
+                  await MedecamentService().addMedicament(Medicament(
+                    nom: _nomController.text,
+                    formePharmaceutique: _formePharmaceutiqueController.text,
+                    dosage: _dosageController.text,
+                    unite:  _uniteController.text,
+                    dateDebut: _dateDebutController.text,
+                    duree: _dureeController.text,
+                  ), widget.user);
+
+                  _nomController.clear();
+                  _formePharmaceutiqueController.clear();
+                  _dosageController.clear();
+                  _uniteController.clear();
+                  _dureeController.clear();
+                  _dateDebutController.clear();
+
                 Navigator.pop(context);
+                setState(() {
+
+                });
               },
             ),
           ],
@@ -243,41 +289,63 @@ class _GestionMedicamentsPageState extends State<GestionMedicamentsPage> {
     );
   }
 
-  void _removeMedicament(int index) {
-    setState(() {
-      medicaments.removeAt(index);
-    });
+  void _removeMedicament(Medicament medicament) {
+
+    showDialog(
+        context: context,
+        builder: (context)=>AlertDialog(
+          title: Text('Confirm Supprime'),
+          content: Text('Vous etes sure supprime ?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context, false), // Cancel
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async{
+                await MedecamentService().Remove(medicament);
+                Navigator.pop(context);
+                setState(() {});
+              },
+              child: Text('Supprime',style: TextStyle(color: Colors.redAccent),),
+            ),
+          ],
+        )
+    );
+
   }
 
   @override
   Widget build(BuildContext context) {
+    String r =  widget.user?.role??"user";
     return Scaffold(
       appBar: AppBar(
         title: Text('Gestion des médicaments'),
       ),
-      body: ListView.builder(
-        itemCount: medicaments.length,
-        itemBuilder: (context, index) {
-          final medicament = medicaments[index];
-          return ListTile(
-            title: Text(medicament.nom),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Forme pharmaceutique: ${medicament.formePharmaceutique}'),
-                Text('Dosage: ${medicament.dosage} ${medicament.unite}'),
-                Text('Date de début: ${medicament.dateDebut}'),
-                Text('Durée: ${medicament.duree} jours'),
-              ],
-            ),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => _removeMedicament(index),
-            ),
+      body: FutureBuilder<List<Medicament>>(
+        future: MedecamentService().getMedicament(widget.user),
+        builder: (BuildContext context, AsyncSnapshot<List<Medicament>> snapshot) {
+          if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+            medicaments = snapshot.data??[];
+          }
+          return snapshot.connectionState == ConnectionState.done?ListView.builder(
+            itemCount: medicaments.length,
+            itemBuilder: (context, index) {
+              debugPrint(widget.user?.role ?? "none role");
+              return GestionMedecamentWidget(
+                user: widget.user,
+                onRemove: (medicament){
+                  _removeMedicament(medicament);
+                },
+                medicament: medicaments[index],index: index+1,);
+            },
+          ):Center(
+            child: CircularProgressIndicator(),
           );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
+          },
+
+            ),
+      floatingActionButton:widget.user==null?null:FloatingActionButton(
         onPressed: _addMedicament,
         child: Icon(Icons.add),
       ),

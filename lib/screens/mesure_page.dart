@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:health/models/data_stored.dart';
 import 'package:health/models/mesure_mode.dart';
 import 'package:health/screens/mesure_page_dialog.dart';
 import 'package:health/services/mesure_provider.dart';
@@ -10,8 +11,8 @@ import '../models/mesure_model.dart';
 
 class MesurePage extends StatefulWidget {
   final String mode;
-  int? id;
-  MesurePage(this.mode,{this.id});
+  DataStored? user;
+  MesurePage(this.mode,{this.user});
   @override
   _MesurePageState createState() => _MesurePageState();
 }
@@ -27,14 +28,14 @@ class _MesurePageState extends State<MesurePage> {
           title: Text('${widget.mode.toUpperCase()}',style: TextStyle(fontSize: 17),),
           actions: [
             IconButton(onPressed: (){
-              Navigator.push(context, CupertinoPageRoute(builder: (context)=>MesurePageDialog(title: widget.mode,id:widget.id)));
+              Navigator.push(context, CupertinoPageRoute(builder: (context)=>MesurePageDialog(title: widget.mode,user:widget.user)));
             }, icon: Icon(Icons.add))
           ],
       ),
       body: Consumer<MesureProvider>(
         builder: (context, providerService, child) {
       return FutureBuilder<List<MesureModel>>(
-        future: providerService.getMesures(widget.mode,widget.id),
+        future: providerService.getMesures(widget.mode,widget.user),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if(snapshot.connectionState == ConnectionState.done){
             List<MesureModel> list = snapshot.data;

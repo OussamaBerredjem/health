@@ -5,9 +5,15 @@ import 'package:health/services/provider_service.dart';
 import 'package:provider/provider.dart';
 
 import '../models/carnet.dart';
+import '../models/data_stored.dart';
 
 
 class AjouterParentPage extends StatefulWidget {
+
+  DataStored? user;
+
+  AjouterParentPage({this.user});
+
   @override
   _AjouterParentPageState createState() => _AjouterParentPageState();
 }
@@ -34,7 +40,7 @@ class _AjouterParentPageState extends State<AjouterParentPage> {
 
   void _submitForm() async{
     if (_formKey.currentState?.validate() ?? false) {
-     await Provider.of<ProviderService>(context,listen: false).addCarnet(_nomController.text, _prenomController.text, _dateNaissanceController.text, _communeNaissanceController.text, _selectedWilaya.toString(), _selectedSexe.toString());
+     await Provider.of<ProviderService>(context,listen: false).addCarnet(_nomController.text, _prenomController.text, _dateNaissanceController.text, _communeNaissanceController.text, _selectedWilaya.toString(), _selectedSexe.toString(),widget.user);
       Navigator.pop(context);
     }
   }

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:health/models/data_stored.dart';
 import 'package:health/models/mesure_model.dart';
 import 'package:health/services/mesure_provider.dart';
 import 'package:provider/provider.dart';
 
 class MesurePageDialog extends StatefulWidget {
   String title;
-  int? id;
-   MesurePageDialog({Key? key,required this.title,this.id}) : super(key: key);
+  DataStored? user;
+   MesurePageDialog({Key? key,required this.title,this.user}) : super(key: key);
 
   @override
   State<MesurePageDialog> createState() => _MesurePageDialogState();
@@ -35,7 +36,8 @@ class _MesurePageDialogState extends State<MesurePageDialog> {
         _select_date.text = "${picked.toLocal()}".split(' ')[0];
       });
     }
-  }   Future<void> _selectTime(BuildContext context) async {
+  }
+  Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -62,7 +64,7 @@ class _MesurePageDialogState extends State<MesurePageDialog> {
         actions: [
         IconButton(onPressed: () async{
           MesureModel mod = MesureModel(title: widget.title, doze:_doze.text, hour: _select_hour.text, date: _select_date.text);
-          await Provider.of<MesureProvider>(context,listen: false).AddMesures(mod,widget.id);
+          await Provider.of<MesureProvider>(context,listen: false).AddMesures(mod,widget.user);
           Navigator.pop(context);
 
         }, icon: Icon(Icons.check,color: Colors.blueAccent,))

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:health/screens/login_screen.dart';
 import 'package:health/screens/onboarding_screen.dart';
+import 'package:health/services/doctor_provider.dart';
 import 'package:health/services/mesure_provider.dart';
 import 'package:health/services/provider_service.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<ProviderService>(create: (context) => ProviderService()),
         ChangeNotifierProvider<MesureProvider>(create: (context) => MesureProvider()),
+        ChangeNotifierProvider<DoctorProvider>(create: (context) => DoctorProvider()),
 
 
       ],

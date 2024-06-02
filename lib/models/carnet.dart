@@ -1,7 +1,7 @@
 class Carnet {
   final String nom;
   final String prenom;
-  final int id;
+  final String id;
 
   Carnet({
     required this.id,

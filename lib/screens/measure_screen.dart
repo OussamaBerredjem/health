@@ -1,13 +1,14 @@
 import'package:flutter/material.dart';
+import 'package:health/models/data_stored.dart';
 import 'package:health/models/mesure_mode.dart';
 
 import '../shared/mesure_widget.dart';
 
 class MesuresPage extends StatelessWidget {
 
-  int? id;
+  DataStored? user;
 
-  MesuresPage({this.id});
+  MesuresPage({DataStored? user});
   var i = const[
     "asset/images/frequence.png",
     "asset/images/glycimie.png",
@@ -36,7 +37,7 @@ class MesuresPage extends StatelessWidget {
       ),
       body: ListView.builder(
           itemCount: 6,
-          itemBuilder: (context,position)=>MesureWidget(title: t[position],subtitle: "",image: i[position],id:id)
+          itemBuilder: (context,position)=>MesureWidget(title: t[position],subtitle: "",image: i[position],user:user)
       )
     );
   }

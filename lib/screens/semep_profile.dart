@@ -1,35 +1,32 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health/models/data_stored.dart';
-import 'package:health/screens/login_screen.dart';
-import 'package:health/services/manage_cache.dart';
-import 'package:health/services/profile_service.dart';
+import 'package:health/models/doctor_model.dart';
+import 'package:health/models/semep_model.dart';
+import 'package:health/services/doctor_profile_service.dart';
+import 'package:health/services/semep_profile_service.dart';
 
-import '../models/user.dart';
-import '../shared/app_button.dart';
-import '../utils/constants.dart';
+import '../services/manage_cache.dart';
+import 'login_screen.dart';
 
-class VueProfil extends StatefulWidget {
-
+class SemepProfile extends StatefulWidget {
   DataStored? user;
-
-  VueProfil({this.user});
+  SemepProfile({Key? key,this.user}) : super(key: key);
 
   @override
-  State<VueProfil> createState() => _VueProfilState();
+  State<SemepProfile> createState() => _SemepProfileState();
 }
 
-class _VueProfilState extends State<VueProfil> {
-
-  ProfileService profileService = ProfileService();
-
+class _SemepProfileState extends State<SemepProfile> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<User>(
-        future: profileService.profile(widget.user),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+    SemepProfileService semepProfileService = SemepProfileService();
+
+    return  FutureBuilder<SemepModel>(
+      future: semepProfileService.profile(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-          User user = snapshot.data;
+          SemepModel user = snapshot.data;
           return SingleChildScrollView(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -40,9 +37,8 @@ class _VueProfilState extends State<VueProfil> {
                       top: 20), // Ajustez ce padding pour monter l'avatar
                   child: Center(
                     child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage:
-                      AssetImage('asset/images/icpatient.png',),
+                        radius: 50,
+                        backgroundImage:AssetImage("asset/images/icsemep.png")
                     ),
                   ),
                 ),
@@ -58,34 +54,29 @@ class _VueProfilState extends State<VueProfil> {
                 SizedBox(height: 10),
                 Divider(),
                 SizedBox(height: 10),
-                _buildInfoCard(Icons.cake, 'Date de Naissance', user.dateNaissance),
+                _buildInfoCard(Icons.cake, 'Telephone', user.number),
                 SizedBox(height: 10),
-                _buildInfoCard(Icons.person, 'Sexe', user.sexe),
+                _buildInfoCard(Icons.person, 'Email', user.email),
                 SizedBox(height: 10),
-                _buildInfoCard(Icons.location_city, 'Commune', user.commune),
+                _buildInfoCard(Icons.location_city, 'Adress', user.adress),
                 SizedBox(height: 10),
-                _buildInfoCard(Icons.map, 'Wilaya', user.wilaya),
-                SizedBox(height: 15,),
-                Visibility(
-                    visible: widget.user==null,
-                    child: ElevatedButton(
-                      style: ButtonStyle(minimumSize: WidgetStateProperty.all(Size(MediaQuery.of(context).size.width*0.84,50))),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Logout',style: TextStyle(fontSize: 21),),
-                          SizedBox(width: 20,),
-                          Icon(Icons.logout)
-                        ],
-                      ),
-                      onPressed: () async{
-                        await ManageCache().Remove();
-                        Navigator.of(context).pushAndRemoveUntil(CupertinoPageRoute(builder: (context)=>LoginScreen()), (route){
-                          return false;
-                        });
-                      },
-                    )
 
+                ElevatedButton(
+                  style: ButtonStyle(minimumSize: WidgetStateProperty.all(Size(MediaQuery.of(context).size.width*0.84,50))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Logout',style: TextStyle(fontSize: 21),),
+                      SizedBox(width: 20,),
+                      Icon(Icons.logout)
+                    ],
+                  ),
+                  onPressed: () async{
+                    await ManageCache().Remove();
+                    Navigator.of(context).pushAndRemoveUntil(CupertinoPageRoute(builder: (context)=>LoginScreen()), (route){
+                      return false;
+                    });
+                  },
                 ),
 
               ],
@@ -96,7 +87,7 @@ class _VueProfilState extends State<VueProfil> {
         return Center(
           child: CircularProgressIndicator(),
         );
-    },
+      },
 
     );
   }
@@ -134,4 +125,5 @@ class _VueProfilState extends State<VueProfil> {
       ),
     );
   }
+
 }

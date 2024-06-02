@@ -64,11 +64,9 @@ class AppButton extends StatelessWidget {
               : solid
               ? null
               : MaterialStatePropertyAll(
-            buttonType == ButtonType.PRIMARY
-                ? primaryColor
-                : buttonType == ButtonType.SECONDARY
+            buttonType == ButtonType.PRIMARY ? primaryColor : buttonType == ButtonType.SECONDARY
                 ? secondaryColor
-                : Colors.black,
+                : Colors.redAccent,
           ),
         ),
         child: Row(

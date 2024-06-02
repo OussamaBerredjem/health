@@ -3,6 +3,7 @@ import 'package:health/screens/carnet_list_screen.dart';
 import 'package:health/screens/forgot_password_screen.dart';
 import 'package:health/screens/register_screen.dart';
 import 'package:health/screens/semep_ajouter_patient.dart';
+import 'package:health/screens/semep_home.dart';
 import 'package:health/services/auth_service.dart';
 
 import '../models/role.dart';
@@ -216,7 +217,17 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             );
                           }else{
-                            Navigator.of(context).push(CupertinoPageRoute(builder: (context)=>role==Role.smep?CarnetListScreen():MyHomePage()));
+                            if(role == Role.user){
+                              Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (context)=>MyHomePage()));
+
+                            }else if(role == Role.smep){
+                              Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (context)=>SemepHome()));
+
+                            }else{
+                              Navigator.of(context).pushReplacement(CupertinoPageRoute(builder: (context)=>CarnetListScreen()));
+
+                            }
+
 
                           }
                         }

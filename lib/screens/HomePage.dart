@@ -2,6 +2,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:health/models/data_stored.dart';
 
 import 'AffichageActualites.dart';
 import 'VueAccueil.dart';
@@ -10,22 +11,9 @@ import 'Vuecartes.dart';
 
 
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Portail Patient',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(),
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
-  int? id;
-  MyHomePage({this.id});
+  DataStored? user;
+  MyHomePage({this.user});
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -114,14 +102,20 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildBody() {
     switch (_selectedIndex) {
       case 0:
-        return VueAccueil(id:widget.id); // Modification ici
+        if(widget.user!=null){
+          return VueAccueil(user:widget.user); // Modification ici
+        }else{
+          return VueAccueil(); // Modification ici
+
+        }
+
       case 1:
         return VueCartes(); // Modification ici
       case 2:
         return AffichageActualites(); // Modification ici
       case 3:
-        if(widget.id!=null){
-          return VueProfil(id: widget.id,); // Modification ici
+        if(widget.user!=null){
+          return VueProfil(user: widget.user,); // Modification ici
         }else{
           return VueProfil(); // Modification ici
 

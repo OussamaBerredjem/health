@@ -1,5 +1,5 @@
 class DataStored{
-  int id;
+  String id;
   String role;
 
   DataStored({required this.id,required this.role});

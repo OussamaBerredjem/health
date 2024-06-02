@@ -1,35 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health/models/data_stored.dart';
-import 'package:health/screens/login_screen.dart';
-import 'package:health/services/manage_cache.dart';
-import 'package:health/services/profile_service.dart';
+import 'package:health/models/doctor_model.dart';
+import 'package:health/services/doctor_profile_service.dart';
 
-import '../models/user.dart';
-import '../shared/app_button.dart';
-import '../utils/constants.dart';
+import '../services/manage_cache.dart';
+import 'login_screen.dart';
 
-class VueProfil extends StatefulWidget {
-
+class DoctorProfile extends StatefulWidget {
   DataStored? user;
-
-  VueProfil({this.user});
+  DoctorProfile({Key? key,this.user}) : super(key: key);
 
   @override
-  State<VueProfil> createState() => _VueProfilState();
+  State<DoctorProfile> createState() => _DoctorProfileState();
 }
 
-class _VueProfilState extends State<VueProfil> {
-
-  ProfileService profileService = ProfileService();
-
+class _DoctorProfileState extends State<DoctorProfile> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<User>(
-        future: profileService.profile(widget.user),
-        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+    DoctorProfileService doctorProfileService = DoctorProfileService();
+
+    return  FutureBuilder<DoctorModel>(
+      future: doctorProfileService.profile(widget.user),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
-          User user = snapshot.data;
+          DoctorModel user = snapshot.data;
           return SingleChildScrollView(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -41,8 +36,7 @@ class _VueProfilState extends State<VueProfil> {
                   child: Center(
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundImage:
-                      AssetImage('asset/images/icpatient.png',),
+                      backgroundImage:AssetImage("asset/images/icdoctor.png")
                     ),
                   ),
                 ),
@@ -58,14 +52,14 @@ class _VueProfilState extends State<VueProfil> {
                 SizedBox(height: 10),
                 Divider(),
                 SizedBox(height: 10),
-                _buildInfoCard(Icons.cake, 'Date de Naissance', user.dateNaissance),
+                _buildInfoCard(Icons.cake, 'Telephone', user.number),
                 SizedBox(height: 10),
-                _buildInfoCard(Icons.person, 'Sexe', user.sexe),
+                _buildInfoCard(Icons.person, 'Email', user.email),
                 SizedBox(height: 10),
-                _buildInfoCard(Icons.location_city, 'Commune', user.commune),
+                _buildInfoCard(Icons.location_city, 'Adress', user.adress),
                 SizedBox(height: 10),
-                _buildInfoCard(Icons.map, 'Wilaya', user.wilaya),
-                SizedBox(height: 15,),
+                _buildInfoCard(Icons.location_city, 'Specialité', user.specialite),
+                SizedBox(height: 10),
                 Visibility(
                     visible: widget.user==null,
                     child: ElevatedButton(
@@ -96,7 +90,7 @@ class _VueProfilState extends State<VueProfil> {
         return Center(
           child: CircularProgressIndicator(),
         );
-    },
+      },
 
     );
   }
@@ -134,4 +128,5 @@ class _VueProfilState extends State<VueProfil> {
       ),
     );
   }
+
 }
