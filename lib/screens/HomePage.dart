@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
         if(widget.user!=null){
           return VueAccueil(user:widget.user); // Modification ici
         }else{
-          return VueAccueil(); // Modification ici
+          return VueAccueil(user: widget.user,); // Modification ici
 
         }
 

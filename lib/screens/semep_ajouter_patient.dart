@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:health/services/provider_service.dart';
 import 'package:provider/provider.dart';
@@ -70,6 +71,9 @@ class _AjouterParentPageState extends State<AjouterParentPage> {
       appBar: AppBar(
         title: Text('Nouveau Carnet'),
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: _submitForm, icon: Icon(Icons.check))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -161,25 +165,13 @@ class _AjouterParentPageState extends State<AjouterParentPage> {
               _buildTextField(
                 controller: _password,
                 label: 'password',
-                icon: Icons.password_outlined,
+                icon: CupertinoIcons.padlock_solid,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer password';
                   }
                   return null;
                 },
-              ),
-              ElevatedButton(
-                onPressed: _submitForm,
-                child: Text('Ajouter'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                  textStyle: TextStyle(fontSize: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
               ),
             ],
           ),

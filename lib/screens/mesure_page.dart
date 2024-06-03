@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:health/models/data_stored.dart';
 import 'package:health/models/mesure_mode.dart';
 import 'package:health/screens/mesure_page_dialog.dart';
+import 'package:health/services/manage_cache.dart';
 import 'package:health/services/mesure_provider.dart';
 import 'package:health/shared/mesure_page_item_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../models/mesure_model.dart';
+import '../models/role.dart';
 
 class MesurePage extends StatefulWidget {
   final String mode;
@@ -19,14 +21,28 @@ class MesurePage extends StatefulWidget {
 
 class _MesurePageState extends State<MesurePage> {
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getRole();
+  }
 
+  String role = Role.user;
+  void getRole() async{
+    DataStored? dataStored  = await ManageCache().dataStored();
+    role = dataStored?.role ?? Role.user;
+    setState(() {
+      
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: Text('${widget.mode.toUpperCase()}',style: TextStyle(fontSize: 17),),
-          actions: [
+          actions: role==Role.user?[]:[
             IconButton(onPressed: (){
               Navigator.push(context, CupertinoPageRoute(builder: (context)=>MesurePageDialog(title: widget.mode,user:widget.user)));
             }, icon: Icon(Icons.add))
